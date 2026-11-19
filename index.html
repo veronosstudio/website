@@ -127,6 +127,8 @@ body.dark .word{color:#F3F1E8}
 .pricing{padding-block:170px 150px}
 .pricing .head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:64px}
 .pricing h2{font-family:var(--display);font-variation-settings:"wdth" 125,"wght" 760;font-size:clamp(46px,6.4vw,110px);line-height:.92;letter-spacing:-.025em}
+.t-side li.plus{list-style:none;font-weight:600;color:var(--gold);margin-left:-18px}
+.t-side li.plus::before,.t-side li.plus::marker{content:none;display:none}
 .t-label .tag{display:inline-block;margin-left:8px;padding:4px 10px;border-radius:999px;background:var(--gold);color:var(--pine);font:700 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .toggle{justify-self:end;display:inline-flex;padding:5px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);position:relative}
 .toggle button{position:relative;z-index:1;border:0;background:none;font:600 15px/1 var(--sans);padding:14px 22px;border-radius:999px;color:var(--sub);cursor:pointer;transition:color .3s}
@@ -511,14 +513,13 @@ function setOdo(str){
   });
   odo.setAttribute('aria-label', '$' + str);
 }
-var base = ['Custom design, built for your business', 'Professional quote request form, sent straight to your inbox', 'Hosting, security and backups', 'Your domain, in your name', 'Real support from a real person'];
 var plans = {
-  starter:{p:'199', label:'Starter', tag:'', sub:'Your homepage plus one page. No setup fee.',
-           list:['Homepage + 1 page', 'Live in 7 days, or your first month is free'].concat(base, ['Unlimited small changes'])},
+  starter:{p:'199', label:'Starter', tag:'', sub:'The essentials, done right. No setup fee.',
+           list:['Homepage + 1 page', 'Live in 7 days, or your first month is free', 'Custom design, built for your business', 'Professional quote request form, sent straight to your inbox', 'Hosting, security and backups', 'Your domain, in your name', 'Unlimited small changes', 'Real support from a real person']},
   full:{p:'299', label:'Website redesign', tag:'Most popular', sub:'Your full website, redesigned. No setup fee.',
-        list:['Your full website, every page', 'Live in 7 days, or your first month is free'].concat(base, ['Google Business profile set up at launch', 'Review kit: a link and QR code for more Google reviews', 'Unlimited small changes'])},
+        list:['Everything in Starter, plus:', 'Your full website, every page', 'Google Business profile set up at launch', 'Review kit: a link and QR code for more Google reviews']},
   growth:{p:'399', label:'Growth', tag:'', sub:'Your full website, plus more calls and quote requests. No setup fee.',
-          list:['Everything in Website redesign', 'Monthly report: visitors, calls and quote requests', 'Google Business profile kept up to date', 'Google and Facebook ad tracking set up', '"Text us" button on your site', 'Unlimited small changes, done first']}
+          list:['Everything in Website redesign, plus:', 'Monthly report: visitors, calls and quote requests', 'Google Business profile kept up to date', 'Google and Facebook ad tracking set up', '"Text us" button on your site', 'Your changes done first']}
 };
 var tbtns = [].slice.call(document.querySelectorAll('.toggle button[data-plan]')), pill = document.getElementById('pill'), cur = 'full';
 function pick(key){
@@ -528,7 +529,7 @@ function pick(key){
   document.getElementById('per').textContent = 'CAD per month';
   document.getElementById('plan-sub').textContent = p.sub;
   var ul = document.getElementById('plan-list'); ul.innerHTML = '';
-  p.list.forEach(function(x){ var li = document.createElement('li'); li.textContent = x; ul.appendChild(li); });
+  p.list.forEach(function(x){ var li = document.createElement('li'); li.textContent = x; if (/plus:$/.test(x)) li.className = 'plus'; ul.appendChild(li); });
   tbtns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.plan === key); });
   var b = tbtns.filter(function(x){ return x.dataset.plan === key; })[0];
   pill.style.width = b.offsetWidth + 'px'; pill.style.transform = 'translateX(' + (b.offsetLeft - 5) + 'px)';
