@@ -11,7 +11,7 @@
 <meta property="og:url" content="https://veronosstudio.com/">
 <meta property="og:site_name" content="Veronos Studio">
 <meta property="og:title" content="Veronos Studio">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Veronos Studio", "url": "https://veronosstudio.com/", "description": "Website design for small businesses that have outgrown their site. Designed, launched and handled every month from $199/mo, no setup fee. See your new homepage before you pay. Based in Calgary, serving Canada.", "founder": {"@type": "Person", "name": "Kash Angell"}, "areaServed": [{"@type": "City", "name": "Calgary"}, {"@type": "Country", "name": "Canada"}], "priceRange": "$199-$299/mo CAD", "serviceType": "Website design and management"}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "ProfessionalService", "name": "Veronos Studio", "url": "https://veronosstudio.com/", "description": "Website design for small businesses that have outgrown their site. Designed, launched and handled every month from $199/mo, no setup fee. See your new homepage before you pay. Based in Calgary, serving Canada.", "founder": {"@type": "Person", "name": "Kash Angell"}, "areaServed": [{"@type": "City", "name": "Calgary"}, {"@type": "Country", "name": "Canada"}], "priceRange": "$199-$399/mo CAD", "serviceType": "Website design and management"}</script>
 <meta property="og:description" content="Websites for businesses that have outgrown theirs. Designed, launched and handled every month.">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 
@@ -127,6 +127,7 @@ body.dark .word{color:#F3F1E8}
 .pricing{padding-block:170px 150px}
 .pricing .head{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:64px}
 .pricing h2{font-family:var(--display);font-variation-settings:"wdth" 125,"wght" 760;font-size:clamp(46px,6.4vw,110px);line-height:.92;letter-spacing:-.025em}
+.t-label .tag{display:inline-block;margin-left:8px;padding:4px 10px;border-radius:999px;background:var(--gold);color:var(--pine);font:700 11px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}
 .toggle{justify-self:end;display:inline-flex;padding:5px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line);position:relative}
 .toggle button{position:relative;z-index:1;border:0;background:none;font:600 15px/1 var(--sans);padding:14px 22px;border-radius:999px;color:var(--sub);cursor:pointer;transition:color .3s}
 .toggle button[aria-pressed="true"]{color:#F3F1E8}
@@ -199,7 +200,8 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
   .top nav{display:none}.top .btn{margin-left:auto}
   .hero{padding-block:120px 40px}
   .hero-grid,.pricing .head,.faq .wrap,.final .wrap{grid-template-columns:1fr;gap:34px}
-  .toggle{justify-self:start}
+  .toggle{justify-self:stretch;display:flex;width:100%}
+  .toggle button{flex:1 1 auto;padding:13px 10px;font-size:14px;white-space:nowrap}
   .r{grid-template-columns:50px 1fr}.r p{grid-column:2;text-align:left}
   .ticket{grid-template-columns:1fr}.ticket::before,.ticket::after{display:none}
   .t-side{border-left:0;border-top:2px dashed rgba(243,241,232,.24)}
@@ -283,29 +285,23 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
 <section class="pricing" id="pricing"><div class="wrap">
   <div class="head">
     <h2 class="big"><span class="ln"><span>Simple,</span></span><span class="ln"><span>upfront pricing.</span></span></h2>
-    <div class="toggle" role="group" aria-label="Plan"><span class="pill" id="pill"></span><button type="button" id="b-month" aria-pressed="true">1–2 pages</button><button type="button" id="b-year" aria-pressed="false">Full site</button></div>
+    <div class="toggle" role="group" aria-label="Plan"><span class="pill" id="pill"></span><button type="button" data-plan="starter" aria-pressed="false">Starter</button><button type="button" data-plan="full" aria-pressed="true">Website redesign</button><button type="button" data-plan="growth" aria-pressed="false">Growth</button></div>
   </div>
   <div class="ticket">
     <div class="t-main">
-      <div class="t-label" id="plan-label">Starter</div>
+      <div class="t-label" id="plan-label">Website redesign <span class="tag">Most popular</span></div>
       <div class="amount" aria-live="polite"><span class="cur">$</span><span class="odo" id="odo"></span></div>
       <div class="per" id="per">CAD per month</div>
-      <div class="sub" id="plan-sub">1–2 pages. No setup fee.</div>
+      <div class="sub" id="plan-sub">Your full website, redesigned. No setup fee.</div>
     </div>
     <div class="t-side">
-      <ul>
-        <li>Custom design, built for your business</li>
-        <li>Hosting, security and backups</li>
-        <li>Changes whenever you ask</li>
-        <li>Your domain, in your name</li>
-        <li>Real support from a real person</li>
-      </ul>
+      <ul id="plan-list"></ul>
       <a class="btn btn-gold mag" href="#preview" style="justify-self:start">Start with a free preview</a>
     </div>
   </div>
   <div class="promises">
     <div><h3>See it before you pay.</h3><p>Your new homepage is designed and in your hands before you spend a dollar.</p></div>
-    <div><h3>No setup fee.</h3><p>Your first month starts it. Six-month minimum, then month to month.</p></div>
+    <div><h3>No setup fee.</h3><p>Your first month starts it. 12-month minimum, then month to month.</p></div>
     <div><h3>No surprise invoices.</h3><p>One price, every month. Changes are included.</p></div>
   </div>
 </div></section>
@@ -315,10 +311,10 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
   <div>
     <details open><summary>Is the preview really free?<i></i></summary><p>Yes. We design your new homepage and send it over. No cost and no obligation.</p></details>
     <details><summary>What do I need to do?<i></i></summary><p>One short call to review the design. We take care of the content, the build and the launch.</p></details>
-    <details><summary>Is there a contract?<i></i></summary><p>Both plans have a six-month minimum. After that it's month to month, and you can cancel with 30 days' notice.</p></details>
-    <details><summary>Do I own my website?<i></i></summary><p>Your domain, logo, photos and words are always yours. If you ever leave, you can keep the site itself with a one-time $500 buyout.</p></details>
+    <details><summary>Is there a contract?<i></i></summary><p>Every plan has a 12-month minimum. After that it's month to month, and you can cancel with 30 days' notice.</p></details>
+    <details><summary>Do I own my website?<i></i></summary><p>Your domain, logo, photos and words are always yours. We look after the design, hosting and code for as long as you're with us.</p></details>
     <details><summary>How fast is it?<i></i></summary><p>Most sites go live about a week after you approve the design.</p></details>
-    <details><summary>Can I make changes later?<i></i></summary><p>Anytime. Send a message with what you need and we take care of it. It's included.</p></details>
+    <details><summary>Can I make changes later?<i></i></summary><p>Yes. Send a text or email with what you need. Website redesign and Growth plans include unlimited small changes (new photos, hours, prices, text), usually done within 1–2 business days. Starter includes up to an hour of changes a month.</p></details>
   </div>
 </div></section>
 
@@ -515,22 +511,31 @@ function setOdo(str){
   });
   odo.setAttribute('aria-label', '$' + str);
 }
+var base = ['Custom design, built for your business', 'Hosting, security and backups', 'Your domain, in your name', 'Real support from a real person'];
 var plans = {
-  month:{p:'199', label:'Starter', per:'CAD per month', sub:'1–2 pages. No setup fee.'},
-  year:{p:'299', label:'Full site', per:'CAD per month', sub:'Multiple pages. No setup fee.'}
+  starter:{p:'199', label:'Starter', tag:'', sub:'Your homepage plus one page. No setup fee.',
+           list:['Homepage + 1 page'].concat(base, ['Up to an hour of changes a month'])},
+  full:{p:'299', label:'Website redesign', tag:'Most popular', sub:'Your full website, redesigned. No setup fee.',
+        list:['Your full website, every page'].concat(base, ['Unlimited small changes'])},
+  growth:{p:'399', label:'Growth', tag:'', sub:'Your full website, plus more calls and quote requests. No setup fee.',
+          list:['Everything in Website redesign', 'Monthly report: visitors, calls and quote requests', 'Google Business profile kept up to date', 'Google and Facebook ad tracking set up', '"Text us" button on your site', 'Priority changes']}
 };
-var bm = document.getElementById('b-month'), by = document.getElementById('b-year'), pill = document.getElementById('pill');
+var tbtns = [].slice.call(document.querySelectorAll('.toggle button[data-plan]')), pill = document.getElementById('pill'), cur = 'full';
 function pick(key){
-  var p = plans[key]; setOdo(p.p);
-  document.getElementById('plan-label').textContent = p.label;
-  document.getElementById('per').textContent = p.per;
+  var p = plans[key]; cur = key; setOdo(p.p);
+  var lab = document.getElementById('plan-label'); lab.textContent = p.label;
+  if (p.tag) { var t = document.createElement('span'); t.className = 'tag'; t.textContent = p.tag; lab.appendChild(document.createTextNode(' ')); lab.appendChild(t); }
+  document.getElementById('per').textContent = 'CAD per month';
   document.getElementById('plan-sub').textContent = p.sub;
-  bm.setAttribute('aria-pressed', key === 'month'); by.setAttribute('aria-pressed', key === 'year');
-  var b = key === 'month' ? bm : by; pill.style.width = b.offsetWidth + 'px'; pill.style.transform = 'translateX(' + (b.offsetLeft - 5) + 'px)';
+  var ul = document.getElementById('plan-list'); ul.innerHTML = '';
+  p.list.forEach(function(x){ var li = document.createElement('li'); li.textContent = x; ul.appendChild(li); });
+  tbtns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.plan === key); });
+  var b = tbtns.filter(function(x){ return x.dataset.plan === key; })[0];
+  pill.style.width = b.offsetWidth + 'px'; pill.style.transform = 'translateX(' + (b.offsetLeft - 5) + 'px)';
 }
-bm.addEventListener('click', function(){ pick('month'); }); by.addEventListener('click', function(){ pick('year'); });
-pick('month'); addEventListener('resize', function(){ pick(bm.getAttribute('aria-pressed') === 'true' ? 'month' : 'year'); });
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ pick(bm.getAttribute('aria-pressed') === 'true' ? 'month' : 'year'); });
+tbtns.forEach(function(b){ b.addEventListener('click', function(){ pick(b.dataset.plan); }); });
+pick('full'); addEventListener('resize', function(){ pick(cur); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ pick(cur); });
 
 /* ---------- magnetic buttons ---------- */
 if (fine && !reduce) {
