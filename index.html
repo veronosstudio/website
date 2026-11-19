@@ -302,7 +302,7 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
   <div class="promises">
     <div><h3>See it before you pay.</h3><p>Your new homepage is designed and in your hands before you spend a dollar.</p></div>
     <div><h3>No setup fee.</h3><p>Your first month starts it. 12-month minimum, then month to month.</p></div>
-    <div><h3>No surprise invoices.</h3><p>One price, every month. Changes are included.</p></div>
+    <div><h3>No surprise invoices.</h3><p>One price, every month. Unlimited small changes included, fair use applies.</p></div>
   </div>
 </div></section>
 
@@ -314,7 +314,7 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
     <details><summary>Is there a contract?<i></i></summary><p>Every plan has a 12-month minimum. After that it's month to month, and you can cancel with 30 days' notice.</p></details>
     <details><summary>Do I own my website?<i></i></summary><p>Your domain, logo, photos and words are always yours. We look after the design, hosting and code for as long as you're with us.</p></details>
     <details><summary>How fast is it?<i></i></summary><p>Most sites go live about a week after you approve the design.</p></details>
-    <details><summary>Can I make changes later?<i></i></summary><p>Yes. Send a text or email with what you need. Website redesign and Growth plans include unlimited small changes (new photos, hours, prices, text), usually done within 1–2 business days. Starter includes up to an hour of changes a month.</p></details>
+    <details><summary>Can I make changes later?<i></i></summary><p>Yes, every plan includes unlimited small changes. Just text or email what you need: new photos, hours, prices, text or a promo. Fair use: a small change is anything that takes about 30 minutes or less, one request at a time, usually done within 1–2 business days (Growth requests go first). Bigger work like new pages or new features is quoted separately.</p></details>
   </div>
 </div></section>
 
@@ -514,11 +514,11 @@ function setOdo(str){
 var base = ['Custom design, built for your business', 'Hosting, security and backups', 'Your domain, in your name', 'Real support from a real person'];
 var plans = {
   starter:{p:'199', label:'Starter', tag:'', sub:'Your homepage plus one page. No setup fee.',
-           list:['Homepage + 1 page'].concat(base, ['Up to an hour of changes a month'])},
+           list:['Homepage + 1 page'].concat(base, ['Unlimited small changes'])},
   full:{p:'299', label:'Website redesign', tag:'Most popular', sub:'Your full website, redesigned. No setup fee.',
         list:['Your full website, every page'].concat(base, ['Unlimited small changes'])},
   growth:{p:'399', label:'Growth', tag:'', sub:'Your full website, plus more calls and quote requests. No setup fee.',
-          list:['Everything in Website redesign', 'Monthly report: visitors, calls and quote requests', 'Google Business profile kept up to date', 'Google and Facebook ad tracking set up', '"Text us" button on your site', 'Priority changes']}
+          list:['Everything in Website redesign', 'Monthly report: visitors, calls and quote requests', 'Google Business profile kept up to date', 'Google and Facebook ad tracking set up', '"Text us" button on your site', 'Unlimited small changes, done first']}
 };
 var tbtns = [].slice.call(document.querySelectorAll('.toggle button[data-plan]')), pill = document.getElementById('pill'), cur = 'full';
 function pick(key){
