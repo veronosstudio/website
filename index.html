@@ -142,10 +142,8 @@ body.dark .word{color:#F3F1E8}
 .t-label{font-size:14px;color:rgba(243,241,232,.6)}
 .amount{display:flex;align-items:flex-start;gap:6px;margin:16px 0 10px;font-family:var(--display);font-variation-settings:"wdth" 130,"wght" 780;font-size:clamp(84px,10vw,160px);line-height:.85;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
 .amount .cur{font-size:.42em;margin-top:.12em}
-.odo{display:inline-flex;overflow:hidden;height:.85em}
-.odo .col{display:flex;flex-direction:column;transition:transform 1.1s cubic-bezier(.2,.8,.2,1)}
-.odo .col span{height:.85em;line-height:.85}
-.odo .sep{display:inline-block}
+.odo{display:inline-block;transition:opacity .25s ease,transform .25s ease}
+.odo.swap{opacity:0;transform:translateY(6px)}
 .per{font-size:17px;color:rgba(243,241,232,.66)}
 .sub{margin-top:8px;color:var(--gold);font-weight:600}
 .t-side ul{list-style:none;margin:0;padding:0;display:grid;gap:12px;font-size:16px}
@@ -349,7 +347,6 @@ footer{padding-block:60px calc(40px + env(safe-area-inset-bottom,0px));overflow:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
 var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -425,10 +422,19 @@ function livingWord(el, fit){
 livingWord(document.getElementById('word'), 'star');
 livingWord(document.getElementById('fword'), 'full');
 
-/* ---------- 3D gold star ---------- */
+/* ---------- 3D gold star (desktop only: the 3D library is ~600 KB, so phones get the light CSS star) ---------- */
 (function(){
   var cv = document.getElementById('star3d');
-  if (typeof THREE === 'undefined') { var d = document.createElement('div'); d.className = 'star-css'; cv.replaceWith(d); return; }
+  function cssStar(){ var d = document.createElement('div'); d.className = 'star-css'; cv.replaceWith(d); }
+  var big = matchMedia('(min-width: 900px) and (pointer: fine)').matches;
+  var save = navigator.connection && navigator.connection.saveData;
+  if (!big || save) return cssStar();
+  var sc = document.createElement('script');
+  sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+  sc.onload = function(){ typeof THREE === 'undefined' ? cssStar() : initStar(); };
+  sc.onerror = cssStar;
+  document.head.appendChild(sc);
+  function initStar(){
   var r = new THREE.WebGLRenderer({canvas:cv, alpha:true, antialias:true});
   r.setPixelRatio(Math.min(devicePixelRatio, 2)); r.outputEncoding = THREE.sRGBEncoding; r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.15;
   var scene = new THREE.Scene(), cam = new THREE.PerspectiveCamera(32, 1, .1, 100); cam.position.z = 6.2;
@@ -460,6 +466,7 @@ livingWord(document.getElementById('fword'), 'full');
     }
     requestAnimationFrame(loop);
   })();
+  }
 })();
 
 /* ---------- ticker ---------- */
@@ -500,18 +507,11 @@ if (hasG && !reduce) {
 /* ---------- pricing toggle with odometer digits ---------- */
 var odo = document.getElementById('odo');
 function setOdo(str){
-  var old = [].slice.call(odo.children);
-  odo.innerHTML = '';
-  str.split('').forEach(function(ch){
-    if (/\d/.test(ch)) {
-      var col = document.createElement('span'); col.className = 'col';
-      for (var d = 0; d <= 9; d++) { var sp = document.createElement('span'); sp.textContent = d; col.appendChild(sp); }
-      var w = document.createElement('span'); w.style.cssText = 'display:inline-block;overflow:hidden;height:.85em'; w.appendChild(col); odo.appendChild(w);
-      col.style.transform = 'translateY(0)';
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){ col.style.transform = 'translateY(' + (-0.85 * +ch) + 'em)'; }); });
-    } else { var s = document.createElement('span'); s.className = 'sep'; s.textContent = ch; odo.appendChild(s); }
-  });
   odo.setAttribute('aria-label', '$' + str);
+  if (odo.textContent === str) return;
+  if (reduce || !odo.textContent) { odo.textContent = str; return; }
+  odo.classList.add('swap');
+  setTimeout(function(){ odo.textContent = str; odo.classList.remove('swap'); }, 180);
 }
 var plans = {
   starter:{p:'199', label:'Starter', tag:'', sub:'The essentials, done right. No setup fee.',
@@ -530,6 +530,8 @@ function pick(key){
   document.getElementById('plan-sub').textContent = p.sub;
   var ul = document.getElementById('plan-list'); ul.innerHTML = '';
   p.list.forEach(function(x){ var li = document.createElement('li'); li.textContent = x; if (/plus:$/.test(x)) li.className = 'plus'; ul.appendChild(li); });
+  if (hasG && !reduce && pick.ran) gsap.from(ul.children, {opacity:0, y:12, duration:.4, stagger:.06, ease:'power2.out', clearProps:'all'});
+  pick.ran = true;
   tbtns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.plan === key); });
   var b = tbtns.filter(function(x){ return x.dataset.plan === key; })[0];
   pill.style.width = b.offsetWidth + 'px'; pill.style.transform = 'translateX(' + (b.offsetLeft - 5) + 'px)';
